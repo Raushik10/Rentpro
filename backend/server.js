@@ -3,9 +3,23 @@ const cors    = require('cors');
 const path    = require('path');
 const app     = express();
 
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials: true }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const allowedOrigins = [
+  'http://localhost:3000',
+  process.env.FRONTEND_URL,
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
 
 // Serve uploads inline (view-only)
 app.use('/uploads', (req, res, next) => {

@@ -22,7 +22,7 @@ function AppRoutes() {
     const token = localStorage.getItem('rp_token');
     if (!token) { setLoading(false); return; }
     try {
-      const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const API = process.env.REACT_APP_API_URL ;
       const res = await fetch(`${API}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });

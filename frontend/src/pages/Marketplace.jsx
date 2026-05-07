@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useT } from '../i18n';
 
-const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+const API = process.env.REACT_APP_API_URL ;
 const publicFetch = async (path) => {
   const res  = await fetch(`${API}${path}`);
   const data = await res.json();

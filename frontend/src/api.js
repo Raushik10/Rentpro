@@ -1,7 +1,7 @@
 // frontend/src/api.js
 // Centralized API helper — imported by all pages to avoid circular deps with App.js
 
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+export const API_BASE_URL = process.env.REACT_APP_API_URL ;
 
 export const api = async (path, opts = {}) => {
   const token = localStorage.getItem('rp_token');

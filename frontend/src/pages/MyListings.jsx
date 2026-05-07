@@ -110,7 +110,7 @@ export default function MyListings({ currency = 'INR' }) {
   };
 
   const f = amt => fmt(amt, currency);
-  const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API = process.env.REACT_APP_API_URL ;
 
   if (loading) return <div style={{ padding:40, textAlign:'center', color:'#94A3B8' }}>Loading…</div>;
 

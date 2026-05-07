@@ -462,7 +462,7 @@ export function ProfileBadge({ name, email, role, onProfile, onLogout, notifCoun
 
 // ── Property image gallery ─────────────────────────────────────
 export function PropImageGallery({ images=[], onDelete }) {
-  const API = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  const API = process.env.REACT_APP_API_URL ;
   if (!images.length) return (
     <div style={{ background:'#F8FAFC', border:'2px dashed #E2E8F0', borderRadius:12,
                   padding:'28px', textAlign:'center', color:'#94A3B8' }}>
