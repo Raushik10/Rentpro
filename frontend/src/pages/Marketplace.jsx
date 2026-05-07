@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useT } from '../i18n';
 
+
 const API = process.env.REACT_APP_API_URL ;
 const publicFetch = async (path) => {
   const res  = await fetch(`${API}${path}`);
@@ -27,6 +28,7 @@ function AmenityChips({ amenities, max = 4 }) {
 
 function PropCard({ p, onClick }) {
   const [hov, setHov] = useState(false);
+  const t = useT();
   const img = p.images?.[0];
   return (
     <div onClick={onClick} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
