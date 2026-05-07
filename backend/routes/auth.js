@@ -81,9 +81,15 @@ router.post('/login', async (req, res) => {
     if (!valid) return res.status(401).json({ error: 'Incorrect password. Please try again.' });
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role, refId: user.ref_id, mustChangePwd: user.must_change_pwd },
+      { 
+        id: result.rows[0].id,
+        role: result.rows[0].role,
+        refId: result.rows[0].ref_id
+      },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      {
+        expiresIn: '7d'
+      }
     );
     res.json({ token, role: user.role, refId: user.ref_id, mustChangePwd: user.must_change_pwd });
   } catch (err) {

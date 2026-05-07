@@ -1,6 +1,9 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors    = require('cors');
 const path    = require('path');
+
 const app     = express();
 
 const allowedOrigins = [
@@ -20,6 +23,10 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 // Serve uploads inline (view-only)
 app.use('/uploads', (req, res, next) => {
