@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+
+  # ── PostgreSQL Database ──────────────────────────────────────
+  db:
+    image: postgres:15-alpine
+    container_name: rentpro_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: rentpro
+      POSTGRES_USER: rentpro_user
+      POSTGRES_PASSWORD: rentpro_pass_local
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rentpro_user -d rentpro"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Node.js Backend API ──────────────────────────────────────
+  backend:
+    build: ./backend
+    container_name: rentpro_api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      DATABASE_URL: postgresql://rentpro_user:rentpro_pass_local@db:5432/rentpro
+      JWT_SECRET: rentpro_jwt_secret_local_dev_2024
+      JWT_EXPIRES_IN: 7d
+      FRONTEND_URL: http://localhost:3000
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  # ── React Frontend ───────────────────────────────────────────
+  frontend:
+    build: ./frontend
+    container_name: rentpro_web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://localhost:5000
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
